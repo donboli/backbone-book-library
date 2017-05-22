@@ -8,10 +8,7 @@ var app = express();
 
 var port = 4711;
 
-app.get('/api', function(request, response) {
-  response.send('Library API is running');
-});
-
+// DB
 mongoose.connect('mongodb://localhost/library_database');
 
 var Book = new mongoose.Schema({
@@ -22,6 +19,22 @@ var Book = new mongoose.Schema({
 
 var BookModel = mongoose.model('Book', Book);
 
+// Routes
+app.get('/api', function(request, response) {
+  response.send('Library API is running');
+});
+
+app.get('/api/books', function(request, response) {
+  return BookModel.find(function(err, books) {
+    if (!err) {
+      return response.send(books);
+    } else {
+      return console.log(err);
+    }
+  });
+});
+
+// Config
 app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
@@ -30,6 +43,7 @@ app.configure(function() {
   app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 });
 
+// Startup
 app.listen(port, function() {
   console.log('Express server listening on port %d in %s mode', port, app.settings.env);
 });
