@@ -30,16 +30,19 @@ app.get('/api', function(request, response) {
   response.send('Library API is running');
 });
 
+// index
 app.get('/api/books', function(request, response) {
   return BookModel.find(function(err, books) {
     if (!err) {
       return response.send(books);
     } else {
-      return console.log(err);
+      console.log(err);
+      return response.status(404).end();
     }
   });
 });
 
+// create
 app.post('/api/books', function(request, response) {
   var book = new BookModel({
     title: request.body.title,
@@ -53,6 +56,18 @@ app.post('/api/books', function(request, response) {
       return response.send(book);
     } else {
       console.log(err);
+    }
+  });
+});
+
+// show
+app.get('/api/books/:id', function(request, response) {
+  return BookModel.findOne({_id: request.params.id}, function(err, book) {
+    if (!err) {
+      return response.send(book);
+    } else {
+      console.log(err);
+      return response.status(404).end();
     }
   });
 });
