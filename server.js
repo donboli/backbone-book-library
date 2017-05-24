@@ -1,12 +1,18 @@
 var application_root = __dirname,
     express = require('express'),
-    bodyParser = require('body-parser'),
     path = require('path'),
     mongoose = require('mongoose');
 
 var app = express();
 
 var port = 4711;
+
+// Config
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(application_root, '../', 'site')));
+app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 
 // DB
 mongoose.connect('mongodb://localhost/library_database');
@@ -34,13 +40,21 @@ app.get('/api/books', function(request, response) {
   });
 });
 
-// Config
-app.configure(function() {
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(path.join(application_root, '../', 'site')));
-  app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
+app.post('/api/books', function(request, response) {
+  var book = new BookModel({
+    title: request.body.title,
+    author: request.body.author,
+    releaseDate: request.body.releaseDate
+  });
+
+  return book.save(function(err) {
+    if (!err) {
+      console.log('created');
+      return response.send(book);
+    } else {
+      console.log(err);
+    }
+  });
 });
 
 // Startup
