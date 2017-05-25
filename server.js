@@ -85,6 +85,26 @@ app.put('/api/books/:id', function(request, response) {
   });
 });
 
+// destroy
+app.delete('/api/books/:id', function(request, response) {
+  return BookModel.findById(request.params.id, function(err, book) {
+    if (!err && book) {
+      book.remove(function(err) {
+        if (!err) {
+          console.log('book removed');
+          return response.status(200).end();
+        } else {
+          console.log(err);
+          return response.status(404).end();
+        }
+      });
+    } else {
+      console.log(err || 'book not found');
+      return response.status(404).end();
+    }
+  });
+});
+
 // Startup
 app.listen(port, function() {
   console.log('Express server listening on port %d in %s mode', port, app.settings.env);
