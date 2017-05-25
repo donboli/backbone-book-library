@@ -3,23 +3,12 @@ var application_root = __dirname,
     path = require('path'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    errorHandler = require('errorhandler'),
-    mongoose = require('mongoose');
+    errorHandler = require('errorhandler');
 
 var app = express();
 
-// DB
-mongoose.connect('mongodb://localhost/library_database');
-
-var Book = new mongoose.Schema({
-  title: String,
-  author: String,
-  releaseDate: Date
-});
-
-var BookModel = mongoose.model('Book', Book);
-
-var routes = require('./routes')(BookModel);
+var schemas = require('./schemas');
+var routes = require('./routes')(schemas);
 
 var port = 4711;
 
@@ -29,7 +18,6 @@ app.use(methodOverride());
 app.use(routes);
 app.use(express.static(path.join(application_root, '../../', 'site')));
 app.use(errorHandler({dumpExceptions: true, showStack: true}));
-
 
 // Startup
 app.listen(port, function() {
