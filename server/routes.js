@@ -24,7 +24,8 @@ module.exports = function(models) {
     var book = new BookModel({
       title: request.body.title,
       author: request.body.author,
-      releaseDate: request.body.releaseDate
+      releaseDate: request.body.releaseDate,
+      keywords: request.body.keywords
     });
 
     return book.save(function(err) {
