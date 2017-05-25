@@ -1,6 +1,6 @@
-module.exports = function(schemas) {
+module.exports = function(models) {
   var routes = require('express').Router();
-  var BookModel = schemas.BookModel;
+  var BookModel = models.BookModel;
 
   // Routes
   routes.get('/api', function(request, response) {

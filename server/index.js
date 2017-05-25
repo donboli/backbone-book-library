@@ -7,8 +7,8 @@ var application_root = __dirname,
 
 var app = express();
 
-var schemas = require('./schemas');
-var routes = require('./routes')(schemas);
+var models = require('./models');
+var routes = require('./routes')(models);
 
 var port = 4711;
 
