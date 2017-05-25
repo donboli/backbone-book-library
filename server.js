@@ -72,6 +72,19 @@ app.get('/api/books/:id', function(request, response) {
   });
 });
 
+// update
+app.put('/api/books/:id', function(request, response) {
+  return BookModel.findByIdAndUpdate(request.params.id, {$set: request.body}, function(err, book) {
+    if (!err) {
+      console.log('book updated');
+      return response.send(book);
+    } else {
+      console.log(err);
+      return response.status(404).end();
+    }
+  });
+});
+
 // Startup
 app.listen(port, function() {
   console.log('Express server listening on port %d in %s mode', port, app.settings.env);
