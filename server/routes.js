@@ -34,6 +34,7 @@ module.exports = function(models) {
         return response.send(book);
       } else {
         console.log(err);
+        return response.status(422).end();
       }
     });
   });

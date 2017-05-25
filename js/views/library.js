@@ -39,7 +39,17 @@ app.LibraryView = Backbone.View.extend({
       var data = $(el).val().trim();
 
       if (data !== '') {
-        formData[el.id] = data;
+        if (el.id === 'keywords') {
+          formData[el.id] = [];
+
+          _.each(data.split(' '), function(keyword) {
+            formData[el.id].push({keyword: keyword});
+          });
+        } else if (el.id === 'releaseDate') {
+          formData[el.id] = new Date(data).getTime();
+        } else {
+          formData[el.id] = data;
+        }
       }
     });
 
