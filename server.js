@@ -62,7 +62,7 @@ app.post('/api/books', function(request, response) {
 
 // show
 app.get('/api/books/:id', function(request, response) {
-  return BookModel.findOne({_id: request.params.id}, function(err, book) {
+  return BookModel.findById(request.params.id, function(err, book) {
     if (!err) {
       return response.send(book);
     } else {
