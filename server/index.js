@@ -16,7 +16,7 @@ var port = 4711;
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(routes);
-app.use(express.static(path.join(application_root, '../../', 'site')));
+app.use(express.static(path.join(application_root, '../')));
 app.use(errorHandler({dumpExceptions: true, showStack: true}));
 
 // Startup
